@@ -9,6 +9,9 @@ verify_ssl = true
 django = "*"
 python-decouple = "*"
 djangorestframework = "*"
+django-rest-auth = "*"
+django-allauth = "*"
+django-cors-headers = "*"
 
 [requires]
 python_version = "3.7"
