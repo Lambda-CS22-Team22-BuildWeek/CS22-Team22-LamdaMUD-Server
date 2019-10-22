@@ -41,6 +41,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # this tells our project to use our app named 'team22ADV'
     'team22ADV',
+    'api',
+    'corsheaders',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'rest_auth.registration',
 ]
 
 MIDDLEWARE = [
@@ -51,6 +60,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # CORS headers middleware
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'cs22MUD.urls'
@@ -103,6 +115,25 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
+
+# add boilerplate to setup permissions for rest_framework
+REST_FRAMEWORK = {
+    #'DEFAULT_PERMISSION_CLASSES': [
+        # will allow read/write permissions for logged in users 
+        # and read only for anonymous users
+    #   'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+        
+    #],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+}
+
+# Set up CORS to allow front-end to connect
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -122,13 +153,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-
-# add boilerplate to setup permissions for rest_framework
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        # will allow read/write permissions for logged in users 
-        # and read only for anonymous users
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
-        
-    ]
-}
