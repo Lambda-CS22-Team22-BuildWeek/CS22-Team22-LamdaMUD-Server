@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 from decouple import config
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -27,7 +28,7 @@ SECRET_KEY = config('SECRET_KEY')
 # use 'cast=bool' to make sure DEBUG is read as a boolean
 DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [config('ALLOWED_HOSTS')]
 
 
 # Application definition
@@ -51,6 +52,9 @@ INSTALLED_APPS = [
     'allauth.account',
     'rest_auth.registration',
 ]
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -89,12 +93,16 @@ WSGI_APPLICATION = 'cs22MUD.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#    }
+#}
+
+DATABASES = {}
+
+DATABASES['default'] = dj_database_url.config(default=config('DATABASE_URL'), conn_max_age=600)
 
 
 # Password validation
@@ -153,3 +161,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+import django_heroku
+django_heroku.settings(locals())

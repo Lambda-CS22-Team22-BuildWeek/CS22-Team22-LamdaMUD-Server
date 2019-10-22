@@ -12,6 +12,11 @@ djangorestframework = "*"
 django-rest-auth = "*"
 django-allauth = "*"
 django-cors-headers = "*"
+gunicorn = "*"
+psycopg2-binary = "*"
+dj-database-url = "*"
+django-heroku = "*"
+whitenoise = "*"
 
 [requires]
 python_version = "3.7"
