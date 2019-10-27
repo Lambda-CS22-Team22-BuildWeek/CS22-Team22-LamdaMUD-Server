@@ -5,8 +5,10 @@
 # procedural generation algorithm and use print_rooms()
 # to see the world.
 
+from django.contrib.auth.models import User
+from team22ADV.models import Player, Room
 
-class Room:
+class Temp_Room:
     def __init__(self, id, name, description, x, y):
         self.id = id
         self.name = name
@@ -80,7 +82,7 @@ class World:
                 direction *= -1
 
             # Create a room in the given direction
-            room = Room(room_count, "A Generic Room", "This is a generic room.", x, y)
+            room = Temp_Room(room_count, "A Generic Room", "This is a generic room.", x, y)
             # Note that in Django, you'll need to save the room after you create it
 
             # Save the room in the World grid
@@ -89,6 +91,9 @@ class World:
             # Connect the new room to the previous room
             if previous_room is not None:
                 previous_room.connect_rooms(room, room_direction)
+            
+            database_room = Room(Title = room.name, Description = room.description)
+            database_room.save()
 
             # Update iteration variables
             previous_room = room
